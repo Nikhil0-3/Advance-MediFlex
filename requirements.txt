@@ -1,3 +1,4 @@
+python==3.10
 # Core ML/DL Libraries
 tensorflow==2.15.0
 numpy==1.24.3
