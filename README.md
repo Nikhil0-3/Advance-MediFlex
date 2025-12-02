@@ -49,8 +49,6 @@ The platform combines artificial intelligence, IoT connectivity, and modern web 
 - 🔒 **Safe & Secure**: Drug interaction detection and allergy checking
 - 📱 **Cross-Platform**: Web application + Android mobile app
 - 🌐 **Always Available**: 24/7 access to healthcare recommendations
-- 📊 **Health Analytics**: Track symptoms, medicines, and health trends
-- 🔔 **Smart Reminders**: Never miss a medication dose
 
 ---
 
@@ -102,33 +100,21 @@ The platform combines artificial intelligence, IoT connectivity, and modern web 
 - Medicine usage history
 - Downloadable prescription reports
 
-#### 8. **Medication Reminders**
-- Schedule-based medication alerts
-- Customizable reminder frequencies
-- Duration tracking
-- Medication adherence monitoring
-
 ### 📊 Advanced Features
 
-#### 9. **Health Dashboard**
-- Visual health analytics with charts
-- Symptom frequency analysis
-- Medicine usage trends
-- Monthly consultation tracking
-
-#### 10. **Smart Prescription Generator**
+#### 8. **Smart Prescription Generator**
 - Professional PDF prescriptions
 - Personalized dosage information
 - Medicine details and precautions
 - Downloadable and shareable reports
 
-#### 11. **Emergency Contacts**
+#### 9. **Emergency Contacts**
 - Quick access to emergency services
 - Ambulance, police, fire services
 - Specialized helplines (poison control, mental health, COVID)
 - One-click emergency calling
 
-#### 12. **Health Tips & Education**
+#### 10. **Health Tips & Education**
 - Curated health information
 - Disease prevention tips
 - Medication guidelines
@@ -136,19 +122,19 @@ The platform combines artificial intelligence, IoT connectivity, and modern web 
 
 ### 🔧 Technical Features
 
-#### 13. **Responsive Design**
+#### 11. **Responsive Design**
 - Mobile-first approach
 - Works on all devices (phone, tablet, desktop)
 - Progressive Web App (PWA) capabilities
 - Touch-optimized interface
 
-#### 14. **Dark Mode Support**
+#### 12. **Dark Mode Support**
 - Theme toggle functionality
 - Eye-friendly dark theme
 - Preference persistence
 - CSS variable-based theming
 
-#### 15. **Real-time Notifications**
+#### 13. **Real-time Notifications**
 - Flash messages for user actions
 - Toast notifications
 - Alert system for critical information
@@ -193,7 +179,6 @@ HTML5 / CSS3 / JavaScript
 MongoDB Atlas
 ├── User Management
 ├── Consultation History
-├── Medication Reminders
 └── Profile Data
 ```
 
@@ -437,12 +422,7 @@ The application will be available at:
 - Includes personalized dosage and tablet counts
 - Share with doctors or pharmacies
 
-#### 6. **Set Reminders**
-- Navigate to Profile → Medication Reminders
-- Add medicine schedule
-- Receive notifications (if configured)
-
-#### 7. **Track History**
+#### 6. **Track History**
 - View past consultations
 - Analyze symptom patterns
 - Export health reports
@@ -661,9 +641,8 @@ Advanced MediFlex includes a native Android application built with Kotlin.
 ### Features
 - ✅ Native Android UI with Material Design
 - ✅ Offline symptom storage
-- ✅ Push notifications for reminders
-- ✅ Camera integration for medicine scanning
-- ✅ Location-based pharmacy finder
+- ✅ Secure user authentication
+- ✅ Symptom analysis and medicine recommendations
 
 ### Installation
 
@@ -694,9 +673,6 @@ Located in `ANROID_APP_FILE_MEDIFLEX/App_Screenshots/`
 
 #### User Profile
 ![Profile](static/screenshots/profile.png)
-
-#### Health Dashboard
-![Dashboard](static/screenshots/dashboard.png)
 
 ---
 
@@ -789,7 +765,6 @@ Advanced MediFlex is an AI-powered recommendation system designed for informatio
 - **TensorFlow Team** - For the amazing deep learning framework
 - **Flask Community** - For the excellent web framework
 - **MongoDB** - For the robust database solution
-- **OpenStreetMap** - For mapping services
 - **Font Awesome** - For beautiful icons
 - **Google Fonts** - For typography
 - **Medical Data Sources** - NHS, WebMD, Mayo Clinic for reference data
