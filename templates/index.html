@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediFlex - Smart Medication System</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="MediFlex Logo" class="navbar-logo">
+                <span>MediFlex</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="/health-tips"><i class="fas fa-notes-medical"></i> Health Tips</a></li>
+                {% if session.get('user_email') %}
+                <li><a href="/history"><i class="fas fa-history"></i> History</a></li>
+                <li><a href="/auth/profile"><i class="fas fa-user"></i> Profile</a></li>
+                {% endif %}
+            </ul>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button onclick="toggleTheme()" class="theme-toggle" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                {% if session.get('user_email') %}
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span style="color: var(--text-secondary); font-size: 0.9rem;">
+                        <i class="fas fa-user-circle"></i> {{ session.get('user_name') }}
+                    </span>
+                    <a href="/auth/logout" class="btn btn-secondary" style="text-decoration: none; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.9rem;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+                {% else %}
+                <a href="/auth/login" class="btn btn-primary" style="text-decoration: none; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.9rem;">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <i class="fas fa-pills"></i> MediFlex
+            </h1>
+            <p class="hero-subtitle">Smart Medication System Powered by Artificial Intelligence</p>
+            <p class="hero-institution">
+                <i class="fas fa-brain"></i> Get Instant Medicine Recommendations Based on Your Symptoms
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- System Features -->
+        <section class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>AI-Powered Diagnosis</h3>
+                <p>CNN-based model with 98.64% precision for accurate medicine recommendations</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-wifi"></i>
+                </div>
+                <h3>IoT Connected</h3>
+                <p>Real-time inventory tracking and remote monitoring capabilities</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Safe & Secure</h3>
+                <p>Validated prescriptions with drug interaction detection</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>24/7 Access</h3>
+                <p>Round-the-clock medication dispensing for emergencies</p>
+            </div>
+        </section>
+
+        <!-- Symptom Input Section -->
+        <section class="symptom-section">
+            <div class="section-header">
+                <h2><i class="fas fa-stethoscope"></i> Enter Your Symptoms</h2>
+                <p>Describe your symptoms separated by commas (e.g., fever, headache, body pain)</p>
+            </div>
+
+            <div class="input-wrapper">
+                <div class="symptom-input-container">
+                    <textarea 
+                        id="symptomInput" 
+                        placeholder="Type your symptoms here... (e.g., fever, cough, sore throat)"
+                        rows="4"
+                    ></textarea>
+                    <div class="input-hint">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Common symptoms: {{ symptoms|join(', ') }}</span>
+                    </div>
+                </div>
+
+                <!-- Quick Symptom Selector -->
+                <div class="quick-select">
+                    <h4><i class="fas fa-hand-pointer"></i> Quick Select Common Symptoms:</h4>
+                    <div class="symptom-tags">
+                        {% for symptom in symptoms %}
+                        <span class="symptom-tag" onclick="addSymptom('{{ symptom }}')">
+                            <i class="fas fa-plus-circle"></i> {{ symptom }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button onclick="analyzeSymptoms()" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Analyze & Get Recommendations
+                    </button>
+                    <button onclick="clearSymptoms()" class="btn btn-secondary">
+                        <i class="fas fa-eraser"></i> Clear
+                    </button>
+                    <button onclick="toggleAdvancedOptions()" class="btn btn-tertiary">
+                        <i class="fas fa-cog"></i> Advanced Options
+                    </button>
+                    <button onclick="showEmergencyContacts()" class="btn" style="background: var(--danger-color); color: white;">
+                        <i class="fas fa-phone-alt"></i> Emergency
+                    </button>
+                </div>
+
+                <!-- Advanced Options Panel -->
+                <div id="advancedOptions" class="advanced-options" style="display: none;">
+                    <h4><i class="fas fa-sliders-h"></i> Advanced Options</h4>
+                    
+                    <!-- Allergy Checker -->
+                    <div class="option-group">
+                        <label><i class="fas fa-allergies"></i> Known Allergies (optional):</label>
+                        <input type="text" id="allergiesInput" placeholder="e.g., NSAIDs, penicillin, aspirin" class="form-input">
+                        <small>Enter any medication allergies separated by commas</small>
+                    </div>
+
+                    <!-- Patient Info for Dosage -->
+                    <div class="option-group">
+                        <label><i class="fas fa-user"></i> Patient Information (for personalized dosage):</label>
+                        <div class="form-row">
+                            <input type="number" id="ageInput" placeholder="Age (years)" class="form-input" min="0" max="120">
+                            <input type="number" id="weightInput" placeholder="Weight (kg)" class="form-input" min="0" max="300" step="0.1">
+                        </div>
+                        <small style="color: var(--primary-color); display: block; margin-top: 0.5rem;">
+                            <i class="fas fa-info-circle"></i> Age & weight help calculate personalized dosage and total tablets needed. 
+                            <strong>Auto-filled from your profile if logged in.</strong>
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Animation -->
+            <div id="loadingSection" class="loading-section" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>Analyzing symptoms with AI model...</p>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="results-section" style="display: none;">
+                <div class="results-header">
+                    <h3><i class="fas fa-prescription-bottle-alt"></i> Recommended Medicines</h3>
+                    <p id="analyzedSymptoms"></p>
+                    <div id="severityBadge" class="severity-badge"></div>
+                </div>
+
+                <!-- Allergy Warnings -->
+                <div id="allergyWarnings" class="alert alert-danger" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Allergy Alert!</strong>
+                    <div id="allergyDetails"></div>
+                </div>
+
+                <!-- Interaction Warnings -->
+                <div id="interactionWarnings" class="alert alert-warning" style="display: none;">
+                    <i class="fas fa-pills"></i>
+                    <strong>Drug Interaction Notice:</strong>
+                    <div id="interactionDetails"></div>
+                </div>
+
+                <div id="medicineResults"></div>
+                
+                <div class="action-panel">
+                    <button onclick="exportReport()" class="btn btn-success">
+                        <i class="fas fa-download"></i> Download Report
+                    </button>
+                    <button onclick="showDosageCalculator()" class="btn btn-info">
+                        <i class="fas fa-calculator"></i> Calculate Dosage
+                    </button>
+                </div>
+                
+                <div class="disclaimer">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Important:</strong> This is an AI-based recommendation system. 
+                    Please consult a qualified healthcare professional before taking any medication. 
+                    This system is designed to assist, not replace professional medical advice.
+                </div>
+            </div>
+        </section>
+
+        <!-- Research Highlights -->
+        <section class="research-highlights">
+            <h2><i class="fas fa-flask"></i> Research Highlights</h2>
+            <div class="highlights-grid">
+                <div class="highlight-card">
+                    <div class="stat">98.64%</div>
+                    <div class="stat-label">Precision</div>
+                </div>
+                <div class="highlight-card">
+                    <div class="stat">96.26%</div>
+                    <div class="stat-label">F1-Score</div>
+                </div>
+                <div class="highlight-card">
+                    <div class="stat">99.17%</div>
+                    <div class="stat-label">AUC Score</div>
+                </div>
+                <div class="highlight-card">
+                    <div class="stat">10,000+</div>
+                    <div class="stat-label">Training Samples</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Medication Reminder Section -->
+        <section class="reminder-section" style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: var(--shadow-lg); margin-top: 2rem;">
+            <div class="section-header">
+                <h2><i class="fas fa-bell"></i> Medication Reminders</h2>
+                <p>Set reminders for your medications</p>
+            </div>
+        </section>
+
+
+    </main>
+
+    <!-- Dosage Calculator Modal -->
+    <div id="dosageModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeDosageModal()">&times;</span>
+            <h3><i class="fas fa-calculator"></i> Dosage Calculator</h3>
+            <div id="dosageCalculatorContent"></div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-pills"></i> MediFlex</h3>
+                <p>Your AI-Powered Healthcare Companion</p>
+                <p>Intelligent Medicine Recommendations at Your Fingertips</p>
+            </div>
+            <div class="footer-section">
+                <h3><i class="fas fa-shield-alt"></i> Medical Disclaimer</h3>
+                <p><strong>Important:</strong> MediFlex provides AI-based recommendations for educational purposes only.</p>
+                <p>Always consult qualified healthcare professionals before taking any medication.</p>
+            </div>
+            <div class="footer-section">
+                <h3><i class="fas fa-headset"></i> Support</h3>
+                <p>For assistance or questions about the system</p>
+                <p>Email: nikhil.030305@gmail.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MediFlex. All rights reserved. | <a href="/about" style="color: inherit; text-decoration: underline;">About</a> | <a href="/health-tips" style="color: inherit; text-decoration: underline;">Health Tips</a></p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

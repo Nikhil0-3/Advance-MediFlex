@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - MediFlex</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="MediFlex Logo" class="navbar-logo">
+                <span>MediFlex</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="/health-tips"><i class="fas fa-notes-medical"></i> Health Tips</a></li>
+                <li><a href="/auth/profile" class="active"><i class="fas fa-user"></i> Profile</a></li>
+            </ul>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button onclick="toggleTheme()" class="theme-toggle" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="/auth/logout" class="btn btn-secondary" style="text-decoration: none; padding: 0.5rem 1rem; border-radius: 0.5rem;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Profile Header -->
+        <section style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: var(--shadow-lg); margin-top: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem;">
+                <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; font-weight: 700;">
+                    {{ stats.name[0].upper() if stats.name else 'U' }}
+                </div>
+                <div>
+                    <h1 style="font-size: 2rem; color: var(--primary-color); margin-bottom: 0.5rem;">{{ stats.name }}</h1>
+                    <p style="color: var(--text-secondary); font-size: 1rem;">
+                        <i class="fas fa-envelope"></i> {{ stats.email }}
+                        {% if stats.verified %}
+                        <span style="color: var(--success-color); margin-left: 0.5rem;">
+                            <i class="fas fa-check-circle"></i> Verified
+                        </span>
+                        {% endif %}
+                    </p>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">
+                        <i class="fas fa-calendar-alt"></i> Member since {{ stats.joined.strftime('%B %Y') if stats.joined else 'Recently' }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 0.75rem; text-align: center;">
+                    <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">{{ stats.total_consultations }}</div>
+                    <div style="opacity: 0.9;">Total Consultations</div>
+                </div>
+                <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 1.5rem; border-radius: 0.75rem; text-align: center;">
+                    <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div style="opacity: 0.9;">Account Secured</div>
+                </div>
+            </div>
+
+            <!-- Profile Information -->
+            <h2 style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 1rem; margin-top: 2rem;">
+                <i class="fas fa-user-circle"></i> Profile Information
+            </h2>
+            
+            <form id="profileForm" style="display: grid; gap: 1.5rem;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark-color);">
+                            <i class="fas fa-birthday-cake"></i> Age
+                        </label>
+                        <input type="number" id="age" class="form-input" placeholder="Enter your age" 
+                               value="{{ stats.profile.age if stats.profile.age else '' }}" min="1" max="120">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark-color);">
+                            <i class="fas fa-weight"></i> Weight (kg)
+                        </label>
+                        <input type="number" id="weight" class="form-input" placeholder="Enter your weight" 
+                               value="{{ stats.profile.weight if stats.profile.weight else '' }}" min="1" max="500">
+                    </div>
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark-color);">
+                        <i class="fas fa-allergies"></i> Known Allergies
+                    </label>
+                    <input type="text" id="allergies" class="form-input" placeholder="e.g., Penicillin, Aspirin (comma-separated)" 
+                           value="{{ stats.profile.allergies|join(', ') if stats.profile.allergies else '' }}">
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark-color);">
+                        <i class="fas fa-heartbeat"></i> Medical Conditions
+                    </label>
+                    <input type="text" id="medical_conditions" class="form-input" placeholder="e.g., Diabetes, Hypertension (comma-separated)" 
+                           value="{{ stats.profile.medical_conditions|join(', ') if stats.profile.medical_conditions else '' }}">
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: fit-content;">
+                    <i class="fas fa-save"></i> Update Profile
+                </button>
+            </form>
+        </section>
+
+        <!-- Consultation History -->
+        <section style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: var(--shadow-lg); margin-top: 2rem; margin-bottom: 2rem;">
+            <h2 style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 1.5rem;">
+                <i class="fas fa-history"></i> Recent Consultations
+            </h2>
+
+            {% if consultations %}
+                <div style="display: grid; gap: 1.5rem;">
+                    {% for consultation in consultations %}
+                    <div style="border: 2px solid var(--border-color); border-radius: 0.75rem; padding: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                            <div>
+                                <h3 style="color: var(--dark-color); font-size: 1.1rem; margin-bottom: 0.5rem;">
+                                    Consultation #{{ loop.index }}
+                                </h3>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                                    <i class="fas fa-clock"></i> {{ consultation.timestamp.strftime('%B %d, %Y at %I:%M %p') if consultation.timestamp else 'Recent' }}
+                                </p>
+                            </div>
+                            {% if consultation.severity %}
+                            <span class="severity-badge severity-{{ consultation.severity }}">
+                                {{ consultation.severity|upper }}
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        <div style="background: var(--light-color); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+                            <strong style="color: var(--dark-color);">Symptoms:</strong>
+                            <p style="color: var(--text-secondary); margin-top: 0.5rem;">
+                                {{ consultation.symptoms if consultation.symptoms else 'N/A' }}
+                            </p>
+                        </div>
+
+                        {% if consultation.medicines %}
+                        <div>
+                            <strong style="color: var(--dark-color);">Recommended Medicines:</strong>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                                {% for medicine in consultation.medicines[:3] %}
+                                <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.4rem 0.8rem; border-radius: 1rem; font-size: 0.85rem;">
+                                    {{ medicine }}
+                                </span>
+                                {% endfor %}
+                                {% if consultation.medicines|length > 3 %}
+                                <span style="color: var(--text-secondary); padding: 0.4rem 0.8rem;">
+                                    +{{ consultation.medicines|length - 3 }} more
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+                    <i class="fas fa-clipboard" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                    <p>No consultation history yet</p>
+                    <a href="/" class="btn btn-primary" style="margin-top: 1rem; display: inline-block; text-decoration: none;">
+                        <i class="fas fa-search"></i> Start Your First Consultation
+                    </a>
+                </div>
+            {% endif %}
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-pills"></i> MediFlex</h3>
+                <p>AI-Powered Smart Medication System</p>
+            </div>
+            <div class="footer-section">
+                <h3><i class="fas fa-envelope"></i> Contact</h3>
+                <p>Email: support@mediflex.health</p>
+            </div>
+            <div class="footer-section">
+                <h3><i class="fas fa-headset"></i> Support</h3>
+                <p>Email: support@mediflex.health</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MediFlex. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Profile form submission
+        document.getElementById('profileForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const age = document.getElementById('age').value;
+            const weight = document.getElementById('weight').value;
+            const allergies = document.getElementById('allergies').value.split(',').map(a => a.trim()).filter(a => a);
+            const medical_conditions = document.getElementById('medical_conditions').value.split(',').map(m => m.trim()).filter(m => m);
+
+            try {
+                const response = await fetch('/auth/update-profile', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({age, weight, allergies, medical_conditions})
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast('Profile updated successfully!', 'success');
+                } else {
+                    showToast('Failed to update profile', 'error');
+                }
+            } catch (error) {
+                showToast('An error occurred', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

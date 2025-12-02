@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        .email-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .email-header h1 {
+            margin: 0 0 10px 0;
+            font-size: 32px;
+        }
+        .email-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        .email-body {
+            padding: 40px 30px;
+        }
+        .greeting {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .message {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .otp-container {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .otp-label {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .otp-code {
+            font-size: 28px;
+            font-weight: 700;
+            color: #667eea;
+            letter-spacing: 6px;
+            font-family: 'Courier New', monospace;
+        }
+        .validity {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+        .info-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .info-box p {
+            margin: 0;
+            color: #92400e;
+            font-size: 14px;
+        }
+        .email-footer {
+            background: #f9fafb;
+            padding: 30px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .email-footer p {
+            margin: 5px 0;
+        }
+        .email-footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <div class="icon">💊</div>
+            <h1>MediFlex</h1>
+            <p>Your AI-Powered Healthcare Companion</p>
+        </div>
+        
+        <div class="email-body">
+            <div class="greeting">Hello {{ name }},</div>
+            
+            <div class="message">
+                Thank you for signing up with MediFlex! To complete your registration and verify your email address, please use the verification code below:
+            </div>
+            
+            <div class="otp-container">
+                <div class="otp-label">Your Verification Code</div>
+                <div class="otp-code">{{ otp }}</div>
+                <div class="validity">⏰ Valid for 10 minutes</div>
+            </div>
+            
+            <div class="info-box">
+                <p><strong>Security Notice:</strong> If you didn't request this code, please ignore this email. Your account remains secure.</p>
+            </div>
+            
+            <div class="message">
+                Enter this code on the verification page to activate your account and start using MediFlex's AI-powered medication recommendations.
+            </div>
+            
+            <div class="message" style="margin-top: 30px; padding-top: 30px; border-top: 1px solid #e5e7eb;">
+                <strong>What you'll get with MediFlex:</strong><br>
+                ✓ AI-powered medication recommendations<br>
+                ✓ Drug interaction checker<br>
+                ✓ Dosage calculator<br>
+                ✓ Allergy conflict detection<br>
+                ✓ Personalized health insights<br>
+                ✓ Consultation history tracking
+            </div>
+        </div>
+        
+        <div class="email-footer">
+            <p><strong>MediFlex</strong> - Smart Medication System</p>
+            <p>Questions? Contact us at <a href="mailto:support@mediflex.health">support@mediflex.health</a></p>
+            <p style="margin-top: 20px; font-size: 12px; color: #9ca3af;">
+                This is an automated message, please do not reply to this email.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
